@@ -43,7 +43,7 @@ button:disabled{opacity:.6;cursor:default}
 [hidden]{display:none!important}
 .hp{display:none}
 </style></head><body><main id="root"><section class="card center"><h1>Loading…</h1></section></main>
-<script>window.__CFG={"url":"https://tdbexgliujscyyvrctcc.supabase.co","key":"sb_publishable_zzAkcepP9LTCb54ESZlYSw_c4zToVx-"};window.__CONTRACTS={"gurjeet-2026-10":{"id":"gurjeet-2026-10","version":"1","title":"Fixed-Term Services Agreement","consultant":"Gurjeet Gill","start":"2026-10-20","end":"2026-11-19","termLabel":"one calendar month","feeGBP":2000,"noticeDays":7,"services":[["Strategy","helping set business priorities, goals and plans for growth."],["Admin improvement","reviewing and improving day-to-day administration, processes and record-keeping."],["New product and services development","researching, developing and helping launch new products and services."]],"pdf":"gurjeet-2026-10.pdf"}};</script>
+<script>window.__CFG={"url":"https://tdbexgliujscyyvrctcc.supabase.co","key":"sb_publishable_zzAkcepP9LTCb54ESZlYSw_c4zToVx-"};window.__CONTRACTS={"gurjeet-2026-10":{"id":"gurjeet-2026-10","version":"1","title":"Fixed-Term Services Agreement","consultant":"Gurjeet Gill","start":"2026-10-20","end":"2026-11-19","termLabel":"one calendar month","feeGBP":2000,"noticeDays":7,"services":[["Strategy","helping set business priorities, goals and plans for growth."],["Admin improvement","reviewing and improving day-to-day administration, processes and record-keeping."],["New product and services development","researching, developing and helping launch new products and services."]],"pdf":"gurjeet-2026-10.pdf","client":{"name":"Jarnail Singh Gill","business":"Authentic Bite"}}};</script>
 <script>(function () {
   var CFG = window.__CFG, CONTRACTS = window.__CONTRACTS;
   var $ = function (id) { return document.getElementById(id); };
@@ -58,10 +58,12 @@ button:disabled{opacity:.6;cursor:default}
       new Intl.DateTimeFormat('en-GB', Object.assign({ hour: '2-digit', minute: '2-digit' }, z)).format(d) + ' (UK time)';
   };
 
+  function clientLine(cl) { return cl && cl.name ? cl.name + (cl.business ? ', trading as ' + cl.business : '') : 'the person who signs below'; }
+
   function body(c) {
     var s = c.services.map(function (x) { return '<li><strong>' + esc(x[0]) + ':</strong> ' + esc(x[1]) + '</li>'; }).join('');
     return '<h2>1. Parties</h2><p>This agreement is made on the date it is signed electronically below, between:</p>' +
-      '<p><strong>Client:</strong> <span id="live" data-empty="the person who signs below">the person who signs below</span> (the “Client”); and</p>' +
+      '<p><strong>Client:</strong> <span id="live" data-empty="' + esc(clientLine(c.client)) + '">' + esc(clientLine(c.client)) + '</span> (the “Client”); and</p>' +
       '<p><strong>Consultant:</strong> ' + esc(c.consultant) + ' (the “Consultant”).</p>' +
       '<h2>2. Term</h2><p>This agreement starts on ' + longDate(c.start) + ' and ends on ' + longDate(c.end) + ' (' + esc(c.termLabel) + '), unless ended early under section 7. It does not renew automatically. Any further month of work will be covered by a new written agreement, issued by mutual agreement.</p>' +
       '<h2>3. Role and services</h2><p>The Consultant will provide the following services to the Client:</p><ul>' + s + '</ul><p>Specific tasks and priorities will be agreed between the parties from time to time.</p>' +
@@ -110,8 +112,8 @@ button:disabled{opacity:.6;cursor:default}
       action = '<section class="card center" id="done"><div class="tick" aria-hidden="true">✓</div><h2>Already signed</h2><p>This contract was signed on <strong>' + esc(ukWhen(signedAt)) + '</strong>. Nothing more to do.</p></section>';
     } else {
       action = '<section class="card" id="formcard"><h2>Sign this contract</h2><form id="f" novalidate autocomplete="on">' +
-        '<label>Full name <span class="req">required</span><input id="name" type="text" autocomplete="name" maxlength="200"></label>' +
-        '<label>Business name <span class="opt">optional</span><input id="business" type="text" autocomplete="organization" maxlength="200"></label>' +
+        '<label>Full name <span class="req">required</span><input id="name" type="text" autocomplete="name" maxlength="200" value="' + esc((c.client || {}).name || '') + '"></label>' +
+        '<label>Business name <span class="opt">optional</span><input id="business" type="text" autocomplete="organization" maxlength="200" value="' + esc((c.client || {}).business || '') + '"></label>' +
         '<label>Address <span class="opt">optional</span><textarea id="address" rows="3" autocomplete="street-address" maxlength="500"></textarea></label>' +
         '<label class="check"><input type="checkbox" id="agree"><span class="box"></span><span>I have read and agree to this contract</span></label>' +
         '<p class="err" id="err" role="alert"></p><button type="submit" id="go">I agree</button></form></section>' +
@@ -130,6 +132,7 @@ button:disabled{opacity:.6;cursor:default}
       live.textContent = t;
     }
     ['name', 'business', 'address'].forEach(function (k) { $(k).addEventListener('input', upd); });
+    upd();
     var busy = false;
     $('f').addEventListener('submit', function (e) {
       e.preventDefault();
