@@ -1,0 +1,28 @@
+{
+  "gurjeet-2026-10": {
+    "id": "gurjeet-2026-10",
+    "version": "1",
+    "title": "Fixed-Term Services Agreement",
+    "consultant": "Gurjeet Gill",
+    "start": "2026-10-20",
+    "end": "2026-11-19",
+    "termLabel": "one calendar month",
+    "feeGBP": 2000,
+    "noticeDays": 7,
+    "services": [
+      [
+        "Strategy",
+        "helping set business priorities, goals and plans for growth."
+      ],
+      [
+        "Admin improvement",
+        "reviewing and improving day-to-day administration, processes and record-keeping."
+      ],
+      [
+        "New product and services development",
+        "researching, developing and helping launch new products and services."
+      ]
+    ],
+    "pdf": "gurjeet-2026-10.pdf"
+  }
+}
